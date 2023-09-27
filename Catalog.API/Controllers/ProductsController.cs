@@ -1,64 +1,66 @@
-﻿using Catalog.Core.Entities;
-using Catalog.Core.Repositories;
+﻿using Catalog.Application.Commands;
+using Catalog.Application.Queries;
+using Catalog.Core.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.API.Controllers
 {
     public class ProductsController : ApiController
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IMediator _mediator;
 
-        public ProductsController(IProductRepository productRepository)
+        public ProductsController(IMediator mediator)
         {
-            _productRepository = productRepository;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
-            var result = await _productRepository.GetAllProducts();
+            var result = await _mediator.Send(new GetAllProductsQuery());
             return Ok(result);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(string id)
         {
-            var result = await _productRepository.GetProductById(id);
+            var result = await _mediator.Send(new GetProductByIdQuery(id));
             return Ok(result);
         }
 
         [HttpGet("{brandName}")]
         public async Task<IActionResult> GetProductsByBrand(string brandName)
         {
-            var result = await _productRepository.GetProductsByBrandName(brandName);
+            var result = await _mediator.Send(new GetProductsByBrandQuery(brandName));
             return Ok(result);
         }
 
-        [HttpGet("{productType}")]
-        public async Task<IActionResult> GetProductsByProductType(string productType)
+        [HttpGet("{productTypeName}")]
+        public async Task<IActionResult> GetProductsByProductType(string productTypeName)
         {
-            var result = await _productRepository.GetProductsByProductType(productType);
+            var result = await _mediator.Send(new GetProductsByProductTypeQuery(productTypeName));
             return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(Product product)
         {
-            var result = await _productRepository.AddProduct(product);
+            var result = await _mediator.Send(new AddProductCommand(product));
             return Ok(result);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(string id, Product product)
         {
-            var result = await _productRepository.UpdateProduct(id, product);
+            var result = await _mediator.Send(new UpdateProductCommand(id, product));
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(string id)
         {
-            var result = await _productRepository.DeleteProduct(id);
+            var result = await _mediator.Send(new DeleteProductCommand(id));
             return Ok(result);
         }
 
