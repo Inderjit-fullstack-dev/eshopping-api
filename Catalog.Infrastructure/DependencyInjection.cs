@@ -1,4 +1,4 @@
-﻿using Catalog.Core.Repositories;
+﻿using Catalog.Application.Repositories;
 using Catalog.Infrastructure.Database;
 using Catalog.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;

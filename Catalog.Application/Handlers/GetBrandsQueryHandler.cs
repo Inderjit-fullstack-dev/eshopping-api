@@ -1,11 +1,12 @@
 ﻿using Catalog.Application.Queries;
 using Catalog.Core.Entities;
-using Catalog.Core.Repositories;
+using Catalog.Application.Repositories;
 using MediatR;
+using Catalog.Application.Helpers;
 
 namespace Catalog.Application.Handlers
 {
-    public class GetBrandsQueryHandler : IRequestHandler<GetBrandsQuery, IEnumerable<Brand>>
+    public class GetBrandsQueryHandler : IRequestHandler<GetBrandsQuery, PagedList<Brand>>
     {
         private readonly IBrandRepository _brandRepository;
 
@@ -13,9 +14,9 @@ namespace Catalog.Application.Handlers
         {
             _brandRepository = brandRepository;
         }
-        public async Task<IEnumerable<Brand>> Handle(GetBrandsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<Brand>> Handle(GetBrandsQuery request, CancellationToken cancellationToken)
         {
-            return await _brandRepository.GetAllBrands();
+            return await _brandRepository.GetAllBrands(request.BrandRequest);
         }
     }
 }

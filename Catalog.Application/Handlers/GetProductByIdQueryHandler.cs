@@ -1,6 +1,6 @@
 ﻿using Catalog.Application.Queries;
 using Catalog.Core.Entities;
-using Catalog.Core.Repositories;
+using Catalog.Application.Repositories;
 using MediatR;
 
 namespace Catalog.Application.Handlers

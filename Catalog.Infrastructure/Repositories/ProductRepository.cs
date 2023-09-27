@@ -1,5 +1,5 @@
 ﻿using Catalog.Core.Entities;
-using Catalog.Core.Repositories;
+using Catalog.Application.Repositories;
 using Catalog.Infrastructure.Database;
 using MongoDB.Driver;
 
@@ -17,6 +17,9 @@ namespace Catalog.Infrastructure.Repositories
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
             return await _context.Products.Find(_ => true).ToListAsync();
+            
+            
+            //var query = _context.Products.AsQueryable();
         }
 
         public async Task<Product> GetProductById(string id)
