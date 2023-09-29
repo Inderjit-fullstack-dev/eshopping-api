@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿//using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Catalog.Application.Helpers
 {
@@ -18,11 +20,15 @@ namespace Catalog.Application.Helpers
         public int PageSize { get; set; }
         public int TotalCount { get; set; }
 
-        public static async Task<PagedList<T>> CreateAsync(IQueryable<T> source, int pageNumber,
+        public static async Task<PagedList<T>> CreateAsync(IMongoQueryable<T> source, int pageNumber,
             int pageSize)
         {
             var count = await source.CountAsync();
-            var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var items = await source.Skip((pageNumber - 1) * pageSize)
+                                    .Take(pageSize)
+                                    .ToListAsync();
+            
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
     }
