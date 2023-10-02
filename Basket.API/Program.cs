@@ -8,6 +8,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddStackExchangeRedisCache(options => 
+{
+    options.Configuration = builder.Configuration.GetValue<string>("RedisSettings:ConnectionString");
+});
+
 builder.Services
         .AddApplication()
         .AddInfrastructure(builder.Configuration);
