@@ -1,0 +1,35 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Discount.gRPCS";
+
+package coupon;
+
+service CoupongRPCService {
+  rpc AddCoupon (Coupon) returns (Coupon);
+  rpc UpdateCoupon (Coupon) returns (Coupon);
+  rpc DeleteCoupon(DeleteCouponRequest) returns (DeleteCouponResponse);
+  rpc GetCoupon(GetCouponRequest) returns (Coupon);
+}
+
+message Coupon {
+  int32 id = 1;
+  string couponCode = 2;
+  string productId = 3;
+  double discount = 4;
+  double maxDiscount = 5;
+  bool isApplied = 6;
+  int64 startDateTimestamp = 7;
+  int64 endDateTimestamp = 8;
+}
+
+message GetCouponRequest {
+  int32 couponId = 1;
+}
+
+message DeleteCouponRequest {
+  int32 couponId = 1;
+}
+
+message DeleteCouponResponse {
+  bool success = 1;
+}
