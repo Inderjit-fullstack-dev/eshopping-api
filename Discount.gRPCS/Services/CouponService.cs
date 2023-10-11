@@ -1,20 +1,36 @@
-﻿using Grpc.Core;
+﻿using AutoMapper;
+using Discount.Application;
+using Discount.Application.Repositories;
+using Grpc.Core;
 
 namespace Discount.gRPCS.Services
 {
     public class CouponService : CoupongRPCService.CoupongRPCServiceBase
     {
-        public override Task<Coupon> GetCoupon(GetCouponRequest request, ServerCallContext context)
+        private readonly IDiscountRepository _discountRepository;
+        private readonly IMapper _mapper;
+
+        public CouponService(IDiscountRepository discountRepository, IMapper mapper)
         {
-            return base.GetCoupon(request, context);
+            _discountRepository = discountRepository;
+            _mapper = mapper;
         }
-        public override Task<Coupon> AddCoupon(Coupon request, ServerCallContext context)
+
+        public override async Task<Coupon> GetDiscount(GetDiscountRequest request, ServerCallContext context)
         {
-            return base.AddCoupon(request, context);
+            return await _discountRepository.GetDiscount(request.CouponCode);
         }
-        public override Task<Coupon> UpdateCoupon(Coupon request, ServerCallContext context)
+        public override async Task<Coupon> GetCoupon(GetCouponRequest request, ServerCallContext context)
         {
-            return base.UpdateCoupon(request, context);
+            return await _discountRepository.GetCouponById(request.CouponId);
+        }
+        public override async Task<Coupon> AddCoupon(Coupon request, ServerCallContext context)
+        {
+            return await _discountRepository.AddDiscount(request);
+        }
+        public override async Task<Coupon> UpdateCoupon(Coupon request, ServerCallContext context)
+        {
+            return await _discountRepository.UpdateDiscount(request);
         }
         public override Task<DeleteCouponResponse> DeleteCoupon(DeleteCouponRequest request, ServerCallContext context)
         {
