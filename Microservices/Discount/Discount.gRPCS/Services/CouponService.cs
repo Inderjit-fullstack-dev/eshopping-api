@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Discount.Application;
+﻿using Discount.Application;
 using Discount.Application.Repositories;
 using Grpc.Core;
 
@@ -8,12 +7,10 @@ namespace Discount.gRPCS.Services
     public class CouponService : CoupongRPCService.CoupongRPCServiceBase
     {
         private readonly IDiscountRepository _discountRepository;
-        private readonly IMapper _mapper;
 
-        public CouponService(IDiscountRepository discountRepository, IMapper mapper)
+        public CouponService(IDiscountRepository discountRepository)
         {
             _discountRepository = discountRepository;
-            _mapper = mapper;
         }
 
         public override async Task<Coupon> GetDiscount(GetDiscountRequest request, ServerCallContext context)
